@@ -1,0 +1,3470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>Paintsplashes | Original Hand-Painted Art</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Original hand-painted artworks by Paintsplashes artist. Abstract, portrait, landscape and contemporary art from Pakistan.">
+    <meta name="keywords" content="original art, paintings Pakistan, hand painted, abstract art, portrait art, landscape paintings">
+    <meta property="og:title" content="Paintsplashes | Original Hand-Painted Art">
+    <meta property="og:description" content="Original hand-painted artworks by Paintsplashes artist in Pakistan.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1541961017774-22349e4a1262?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80">
+    <meta property="og:url" content="https://paintsplashes.com">
+    <meta name="twitter:card" content="summary_large_image">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Critical CSS (First Paint Optimization) -->
+    <style>
+        /* Critical Above-the-fold CSS */
+        :root {
+            --primary: #7C3AED;
+            --primary-dark: #5B21B6;
+            --primary-light: #A78BFA;
+            --secondary: #0EA5E9;
+            --accent: #F59E0B;
+            --accent-light: #FBBF24;
+            --dark: #0F172A;
+            --dark-light: #1E293B;
+            --light: #F8FAFC;
+            --gray: #94A3B8;
+            --success: #10B981;
+            --sold: #EF4444;
+            --available: #10B981;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-heavy: rgba(15, 23, 42, 0.97);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+            --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0F172A 0%, #1E1B4B 50%, #0F172A 100%);
+            color: var(--light);
+            overflow-x: hidden;
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+            touch-action: pan-y;
+        }
+
+        /* Loading State */
+        #app-loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0F172A 0%, #1E1B4B 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+        }
+
+        .loading-paint {
+            width: 80px;
+            height: 80px;
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .loading-paint::before,
+        .loading-paint::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            animation: paintLoading 1.5s ease-in-out infinite;
+        }
+
+        .loading-paint::before {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            opacity: 0.7;
+        }
+
+        .loading-paint::after {
+            width: 70%;
+            height: 70%;
+            background: linear-gradient(45deg, var(--secondary), var(--primary));
+            top: 15%;
+            left: 15%;
+            animation-delay: 0.2s;
+        }
+
+        @keyframes paintLoading {
+            0%, 100% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+
+        /* Header for Critical Render */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            transition: var(--transition);
+            opacity: 0;
+            transform: translateY(-20px);
+            animation: fadeInDown 0.8s ease-out 0.3s forwards;
+        }
+
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            position: relative;
+        }
+
+        @keyframes fadeInDown {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+    
+    <!-- Non-critical CSS will be loaded asynchronously -->
+    <link rel="stylesheet" href="style.css" media="print" onload="this.media='all'">
+</head>
+<body>
+    <!-- App Loading State -->
+    <div id="app-loading">
+        <div class="loading-paint"></div>
+        <div style="font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; font-weight: 700; background: linear-gradient(90deg, var(--primary), var(--accent)); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 1rem;">
+            Paintsplashes
+        </div>
+        <div style="color: var(--gray);">Loading your art experience...</div>
+    </div>
+
+    <!-- Paint Stroke Background -->
+    <div class="paint-stroke-bg"></div>
+
+    <!-- Scroll Progress Indicator -->
+    <div class="scroll-progress" id="scroll-progress"></div>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="back-to-top" aria-label="Back to top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <!-- WhatsApp Quick Chat -->
+    <a href="https://wa.me/923001234567" class="whatsapp-chat" target="_blank" aria-label="Chat on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+        <span class="whatsapp-pulse"></span>
+    </a>
+
+    <!-- Confetti Container -->
+    <div class="confetti-container" id="confetti-container"></div>
+
+    <!-- Celebration Container -->
+    <div class="celebration-container" id="celebration-container">
+        <div class="celebration-text" id="celebration-text">🎉 Order Placed! 🎉</div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="logo">Paintsplashes</div>
+        
+        <nav>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#gallery" class="nav-link">Gallery</a></li>
+                <li><a href="#philosophy" class="nav-link">Art Philosophy</a></li>
+                <li><a href="#about-art" class="nav-link">About Art</a></li>
+                <li><a href="#faq" class="nav-link">FAQ</a></li>
+                <li><a href="#shipping" class="nav-link">Shipping</a></li>
+            </ul>
+        </nav>
+        
+        <div class="nav-actions">
+            <button class="nav-btn" id="wishlist-btn" aria-label="Wishlist">
+                <i class="fas fa-heart"></i>
+                <span class="badge" id="wishlist-count">0</span>
+            </button>
+            
+            <div class="cart-preview-container">
+                <button class="nav-btn" id="cart-btn" aria-label="Cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="badge" id="cart-count">0</span>
+                </button>
+                
+                <!-- Smart Cart Preview Dropdown -->
+                <div class="cart-preview-dropdown" id="cart-preview">
+                    <div class="cart-preview-title">Your Cart</div>
+                    <div class="cart-preview-items" id="cart-preview-items">
+                        <!-- Cart items will be added here -->
+                    </div>
+                </div>
+            </div>
+            
+            <button class="nav-btn mobile-menu-btn" id="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-reveal"></div>
+        <div class="hero-content">
+            <h1>Where Every Stroke Tells a Story</h1>
+            <p>Original hand-painted artworks created with passion. Each painting is a unique expression, crafted with premium materials and artistic dedication.</p>
+            <button class="btn btn-primary" id="explore-btn">
+                <i class="fas fa-palette"></i> Explore Collection
+            </button>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="section" id="gallery">
+        <h2 class="section-title" id="gallery-title">Art Gallery</h2>
+        
+        <div class="gallery-controls">
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">All Artworks</button>
+                <button class="filter-btn" data-filter="abstract">Abstract</button>
+                <button class="filter-btn" data-filter="portrait">Portrait</button>
+                <button class="filter-btn" data-filter="landscape">Landscape</button>
+            </div>
+            
+            <div class="sort-options">
+                <span>Sort by:</span>
+                <select class="sort-select" id="sort-select">
+                    <option value="newest">Newest First</option>
+                    <option value="popular">Most Popular</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="gallery-grid" id="gallery-grid">
+            <!-- Artworks will be loaded here with staggered animation -->
+        </div>
+        
+        <div style="text-align: center; margin-top: 4rem;">
+            <button class="btn btn-secondary" id="load-more">
+                <i class="fas fa-plus"></i> Load More Artworks
+            </button>
+        </div>
+    </section>
+
+    <!-- Art Philosophy Section -->
+    <section class="section" id="philosophy" style="background: rgba(15, 23, 42, 0.5);">
+        <h2 class="section-title">Art Philosophy</h2>
+        <div class="philosophy-content">
+            <p>Art is not just about colors on canvas—it's about emotions, stories, and connections. Each painting I create is a journey that begins with inspiration and ends with a piece of my soul on canvas.</p>
+            <p>I believe in creating art that speaks to the heart, using traditional techniques with a contemporary perspective. Every stroke is intentional, every color choice meaningful, and every composition tells a unique story.</p>
+            <p>My work explores the intersection of emotion and aesthetics, creating pieces that are both visually captivating and emotionally resonant.</p>
+        </div>
+    </section>
+
+    <!-- About the Art Section -->
+    <section class="section" id="about-art">
+        <h2 class="section-title">About The Art</h2>
+        <div class="about-art-grid">
+            <div class="about-art-card">
+                <div class="about-art-icon">
+                    <i class="fas fa-paint-brush"></i>
+                </div>
+                <h3>Technique</h3>
+                <p>Each artwork is created using traditional oil and acrylic painting techniques, combined with modern approaches for texture and depth.</p>
+            </div>
+            <div class="about-art-card">
+                <div class="about-art-icon">
+                    <i class="fas fa-palette"></i>
+                </div>
+                <h3>Materials</h3>
+                <p>Premium artist-grade paints on high-quality canvas. All materials are archival quality to ensure longevity and color preservation.</p>
+            </div>
+            <div class="about-art-card">
+                <div class="about-art-icon">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <h3>Care Instructions</h3>
+                <p>Keep away from direct sunlight and extreme humidity. Clean with a soft, dry cloth. Avoid using water or chemical cleaners.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="section" id="faq">
+        <h2 class="section-title">Frequently Asked Questions</h2>
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>How long does shipping take?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Shipping within Pakistan takes 3-5 business days. International shipping takes 7-14 business days depending on the destination.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>What payment methods do you accept?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>We accept Cash on Delivery, EasyPaisa, and JazzCash. For international orders, we accept credit/debit cards and bank transfers.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Can I return or exchange an artwork?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Yes, we accept returns within 7 days of delivery if the artwork is in original condition. Please contact us for return instructions.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Do you offer framing?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Yes, we offer professional framing services. You can choose from various frame styles during the checkout process.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>How do I care for my painting?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Keep away from direct sunlight, extreme temperatures, and humidity. Clean with a soft, dry cloth only. Do not use water or chemicals.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Shipping & Returns -->
+    <section class="section" id="shipping">
+        <h2 class="section-title">Shipping & Returns Policy</h2>
+        <div class="policy-content">
+            <div class="policy-section">
+                <h3>Shipping Policy</h3>
+                <p>All artworks are carefully packaged and shipped within 1-2 business days after order confirmation. We use professional art shipping services to ensure safe delivery.</p>
+            </div>
+            
+            <div class="policy-section">
+                <h3>Delivery</h3>
+                <p>We deliver across Pakistan. For major cities, delivery typically takes 3-5 business days. For remote areas, it may take up to 7 business days.</p>
+            </div>
+            
+            <div class="policy-section">
+                <h3>Returns & Exchanges</h3>
+                <p>We accept returns within 7 days of delivery for a full refund or exchange. The artwork must be in its original condition and packaging.</p>
+            </div>
+            
+            <div class="policy-section">
+                <h3>Damaged Items</h3>
+                <p>If your artwork arrives damaged, please contact us within 48 hours of delivery with photos. We will arrange for a replacement or refund.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div>
+                <div class="logo" style="font-size: 2rem; margin-bottom: 1rem;">Paintsplashes</div>
+                <p style="color: var(--gray); margin-bottom: 1.5rem;">Original hand-painted artworks from Pakistan</p>
+                <div style="display: flex; gap: 1rem;">
+                    <a href="https://wa.me/923001234567" style="color: var(--gray); text-decoration: none;">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a href="https://instagram.com/paintsplashes" style="color: var(--gray); text-decoration: none;">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div>
+                <h3 style="color: var(--light); margin-bottom: 1rem;">Quick Links</h3>
+                <ul style="list-style: none;">
+                    <li style="margin-bottom: 0.8rem;"><a href="#home" class="footer-link">Home</a></li>
+                    <li style="margin-bottom: 0.8rem;"><a href="#gallery" class="footer-link">Gallery</a></li>
+                    <li style="margin-bottom: 0.8rem;"><a href="#faq" class="footer-link">FAQ</a></li>
+                    <li style="margin-bottom: 0.8rem;"><a href="#shipping" class="footer-link">Shipping</a></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h3 style="color: var(--light); margin-bottom: 1rem;">Contact</h3>
+                <p style="color: var(--gray); margin-bottom: 0.8rem;">
+                    <i class="fas fa-phone"></i> 0300 1234567
+                </p>
+                <p style="color: var(--gray); margin-bottom: 0.8rem;">
+                    <i class="fas fa-envelope"></i> info@paintsplashes.com
+                </p>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2024 Paintsplashes. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Image Viewer Modal with Swipe -->
+    <div class="modal" id="image-viewer-modal">
+        <div class="modal-content">
+            <button class="close-modal" id="close-image-viewer">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <div class="image-viewer">
+                <div class="main-image-container">
+                    <img class="main-image" id="main-image" src="" alt="Artwork">
+                    <div class="swipe-indicator">
+                        <span class="swipe-left"><i class="fas fa-chevron-left"></i></span>
+                        <span class="swipe-right"><i class="fas fa-chevron-right"></i></span>
+                    </div>
+                    <button class="image-zoom" id="zoom-btn" aria-label="Zoom Image">
+                        <i class="fas fa-search-plus"></i>
+                    </button>
+                </div>
+                
+                <div class="thumbnail-container" id="thumbnail-container">
+                    <!-- Thumbnails will be dynamically generated -->
+                </div>
+            </div>
+            
+            <div style="margin-top: 2.5rem;">
+                <h3 id="viewer-title" style="font-family: 'Cormorant Garamond', serif; font-size: 2rem;">Artwork Title</h3>
+                <div class="art-category" style="margin: 0.5rem 0 1rem;">
+                    <i class="fas fa-tag"></i>
+                    <span id="viewer-category">Abstract</span>
+                </div>
+                <p id="viewer-price" style="font-size: 1.8rem; font-weight: 700; margin-bottom: 1.5rem;">Rs. 0</p>
+                <p id="viewer-desc" style="color: var(--gray); line-height: 1.7; margin-bottom: 1.5rem;">Artwork description goes here.</p>
+                <div id="viewer-status" class="art-status status-available" style="position: static; display: inline-block; margin-bottom: 1.5rem;">Available</div>
+                
+                <div style="display: flex; gap: 1.5rem; margin-top: 2rem; flex-wrap: wrap;">
+                    <button class="btn btn-primary ripple" id="viewer-purchase" style="flex: 2;">
+                        <i class="fas fa-shopping-cart"></i> Purchase Original Painting
+                    </button>
+                    <button class="btn btn-secondary ripple" id="viewer-wishlist">
+                        <i class="fas fa-heart"></i> Add to Wishlist
+                    </button>
+                    <button class="btn btn-secondary ripple" id="viewer-share">
+                        <i class="fas fa-share-alt"></i> Share
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Purchase Modal -->
+    <div class="modal" id="purchase-modal">
+        <div class="modal-content">
+            <button class="close-modal" id="close-purchase-modal">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2 class="modal-title">Purchase Original Artwork</h2>
+            
+            <!-- Progress Steps -->
+            <div class="progress-steps">
+                <div class="progress-bar" id="progress-bar" style="width: 33.33%;"></div>
+                <div class="step active" id="step-1">1</div>
+                <div class="step" id="step-2">2</div>
+                <div class="step" id="step-3">3</div>
+            </div>
+            
+            <!-- Step 1: Artwork Details -->
+            <div id="step-1-content">
+                <div class="form-group">
+                    <label class="form-label">Selected Artwork</label>
+                    <div style="background: var(--glass); padding: 1.8rem; border-radius: 16px; border: 1px solid var(--glass-border);">
+                        <strong id="purchase-art-title" style="font-size: 1.3rem; font-family: 'Cormorant Garamond', serif;">Cosmic Dreams</strong>
+                        <div style="display: flex; justify-content: space-between; margin-top: 1.5rem; align-items: center;">
+                            <div>
+                                <div style="color: var(--primary-light); font-size: 1rem; margin-bottom: 0.5rem;">
+                                    <i class="fas fa-tag"></i>
+                                    <span id="purchase-art-category">Abstract Painting</span>
+                                </div>
+                                <div style="color: var(--gray); font-size: 0.9rem;">Original Hand-Painted Artwork</div>
+                            </div>
+                            <div id="purchase-art-price" style="font-size: 1.8rem; font-weight: 700; color: var(--primary);">Rs. 0</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">What You'll Receive</label>
+                    <div style="background: var(--glass); padding: 1.8rem; border-radius: 16px; border: 1px solid var(--glass-border);">
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-bottom: 1.5rem;">
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <div style="width: 40px; height: 40px; background: linear-gradient(135deg, var(--primary), var(--accent)); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white;">
+                                    <i class="fas fa-paint-brush"></i>
+                                </div>
+                                <div>
+                                    <div style="font-weight: 600;">Original Painting</div>
+                                    <div style="font-size: 0.9rem; color: var(--gray);">Hand-painted artwork</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <div style="width: 40px; height: 40px; background: linear-gradient(135deg, var(--primary), var(--accent)); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white;">
+                                    <i class="fas fa-shipping-fast"></i>
+                                </div>
+                                <div>
+                                    <div style="font-weight: 600;">Free Delivery</div>
+                                    <div style="font-size: 0.9rem; color: var(--gray);">Across Pakistan</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="color: var(--gray); font-size: 0.9rem; padding: 1rem; background: rgba(124, 58, 237, 0.1); border-radius: 8px; border-left: 4px solid var(--primary);">
+                            <i class="fas fa-info-circle"></i> Each painting is carefully packaged and delivered to your doorstep.
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary ripple" id="next-to-step-2" style="width: 100%; padding: 1.2rem;">
+                    <i class="fas fa-arrow-right"></i> Continue to Checkout
+                </button>
+            </div>
+            
+            <!-- Step 2: Customer Information -->
+            <form id="purchase-form" style="display: none;">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="name">Full Name *</label>
+                        <input type="text" id="name" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="email">Email Address *</label>
+                        <input type="email" id="email" class="form-input" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="phone">Phone Number *</label>
+                        <input type="tel" id="phone" class="form-input" required placeholder="0300 1234567">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="whatsapp">WhatsApp Number</label>
+                        <input type="tel" id="whatsapp" class="form-input" placeholder="Optional - same as phone">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="address">Delivery Address *</label>
+                    <textarea id="address" class="form-input" rows="3" required placeholder="Complete address including city and area"></textarea>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="city">City *</label>
+                        <input type="text" id="city" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="postal">Postal Code</label>
+                        <input type="text" id="postal" class="form-input">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Payment Method *</label>
+                    <div class="payment-methods">
+                        <div class="payment-method ripple" data-method="cod">
+                            <div class="payment-icon">
+                                <i class="fas fa-money-bill-wave"></i>
+                            </div>
+                            <div>Cash on Delivery</div>
+                            <small style="color: var(--gray); margin-top: 0.5rem; display: block;">Pay when you receive</small>
+                        </div>
+                        <div class="payment-method ripple" data-method="easypaisa">
+                            <div class="payment-icon">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <div>EasyPaisa</div>
+                            <small style="color: var(--gray); margin-top: 0.5rem; display: block;">Prepaid transfer</small>
+                        </div>
+                        <div class="payment-method ripple" data-method="jazzcash">
+                            <div class="payment-icon">
+                                <i class="fas fa-wallet"></i>
+                            </div>
+                            <div>JazzCash</div>
+                            <small style="color: var(--gray); margin-top: 0.5rem; display: block;">Prepaid transfer</small>
+                        </div>
+                    </div>
+                    <input type="hidden" id="payment-method" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Special Instructions (Optional)</label>
+                    <textarea id="instructions" class="form-input" rows="2" placeholder="Any special requests or delivery instructions..."></textarea>
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="terms" class="checkbox" required>
+                    <label for="terms" style="color: var(--gray); font-size: 0.9rem;">I agree to the Terms & Conditions and understand this is an original hand-painted artwork</label>
+                </div>
+                
+                <div style="display: flex; gap: 1.5rem;">
+                    <button type="button" class="btn btn-secondary ripple" id="back-to-step-1" style="flex: 1; padding: 1.2rem;">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <button type="submit" class="btn btn-primary ripple" style="flex: 2; padding: 1.2rem;">
+                        <i class="fas fa-check-circle"></i> Complete Order
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Receipt Modal -->
+    <div class="modal" id="receipt-modal">
+        <div class="modal-content">
+            <button class="close-modal" id="close-receipt-modal">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2 class="modal-title">Order Confirmation</h2>
+            
+            <div class="receipt">
+                <div class="receipt-header">
+                    <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 2rem; background: linear-gradient(90deg, var(--primary), var(--accent)); -webkit-background-clip: text; background-clip: text; color: transparent;">PAINTSPLASHES</h3>
+                    <p style="color: var(--gray); font-size: 1.1rem;">Original Art Purchase Receipt</p>
+                </div>
+                
+                <div class="receipt-details">
+                    <div>
+                        <p><strong>Order ID:</strong> <span id="receipt-order-id" style="color: var(--primary); font-weight: 600; font-size: 1.1rem;">PS-2024-001</span></p>
+                        <p><strong>Date:</strong> <span id="receipt-date">Loading...</span></p>
+                        <p><strong>Time:</strong> <span id="receipt-time">Loading...</span></p>
+                        <p><strong>Status:</strong> <span style="color: var(--success); font-weight: 600;">Order Confirmed</span></p>
+                    </div>
+                    <div>
+                        <p><strong>Customer:</strong> <span id="receipt-customer">Loading...</span></p>
+                        <p><strong>Email:</strong> <span id="receipt-email">Loading...</span></p>
+                        <p><strong>Phone:</strong> <span id="receipt-phone">Loading...</span></p>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 2rem;">
+                    <h4 style="margin-bottom: 1.5rem; color: var(--primary); font-size: 1.2rem;">Order Details</h4>
+                    <div class="receipt-item">
+                        <span id="receipt-art-title">Cosmic Dreams - Original Painting</span>
+                        <span id="receipt-art-price">Rs. 0</span>
+                    </div>
+                    <div class="receipt-item">
+                        <span>Delivery Charges</span>
+                        <span>Rs. 0</span>
+                    </div>
+                    <div class="receipt-total">
+                        <span>TOTAL AMOUNT</span>
+                        <span id="receipt-total">Rs. 0</span>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--glass-border);">
+                    <p><strong>Payment Method:</strong> <span id="receipt-payment" style="color: var(--primary); font-weight: 600;">Cash on Delivery</span></p>
+                    <p><strong>Delivery Address:</strong> <span id="receipt-address">Loading...</span></p>
+                    <div style="font-size: 0.95rem; color: var(--gray); margin-top: 1.5rem; background: rgba(124, 58, 237, 0.1); padding: 1.5rem; border-radius: 12px; border-left: 4px solid var(--primary);">
+                        <i class="fas fa-info-circle"></i> 
+                        <strong style="color: var(--light);">Next Steps:</strong><br>
+                        1. We will contact you within 24 hours to confirm your order<br>
+                        2. Your original painting will be prepared for delivery<br>
+                        3. Delivery typically takes 3-5 business days<br>
+                        4. For Cash on Delivery, payment is made when you receive the artwork
+                    </div>
+                </div>
+                
+                <div style="margin-top: 2rem; text-align: center;">
+                    <div style="display: inline-flex; align-items: center; gap: 1rem; background: var(--glass); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--glass-border);">
+                        <div style="font-size: 2rem; color: var(--primary);">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <div style="text-align: left;">
+                            <div style="font-weight: 600; color: var(--light);">Need Help?</div>
+                            <div style="font-size: 0.9rem; color: var(--gray);">Contact us on WhatsApp: 0300 1234567</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary download-receipt ripple" id="download-receipt">
+                    <i class="fas fa-download"></i> Download Receipt
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Zoom Overlay -->
+    <div class="zoom-overlay" id="zoom-overlay">
+        <img class="zoomed-image" id="zoomed-image" src="" alt="Zoomed Artwork">
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <div id="notification-message">Notification message</div>
+    </div>
+
+    <!-- Main CSS (Non-critical) -->
+    <style>
+        /* Non-critical CSS loaded after critical render */
+        /* Paint Stroke Background */
+        .paint-stroke-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            opacity: 0.1;
+            background-image: 
+                radial-gradient(circle at 20% 80%, var(--primary) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, var(--accent) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, var(--secondary) 0%, transparent 50%);
+            animation: pulseBg 20s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulseBg {
+            0% { opacity: 0.05; transform: scale(1); }
+            100% { opacity: 0.15; transform: scale(1.1); }
+        }
+
+        /* Scroll Progress Indicator */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            z-index: 1000;
+            transition: width 0.1s ease;
+            box-shadow: 0 0 10px rgba(124, 58, 237, 0.5);
+            will-change: width;
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border: 2px solid var(--light);
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(-10px);
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px) scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+            .back-to-top {
+                bottom: 80px;
+                right: 15px;
+                width: 45px;
+                height: 45px;
+            }
+        }
+
+        /* WhatsApp Quick Chat */
+        .whatsapp-chat {
+            position: fixed;
+            bottom: 30px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            color: white;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            box-shadow: var(--shadow-lg);
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .whatsapp-chat:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4);
+        }
+
+        .whatsapp-pulse {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: rgba(37, 211, 102, 0.5);
+            animation: whatsappPulse 2s infinite;
+        }
+
+        @keyframes whatsappPulse {
+            0% { transform: scale(1); opacity: 0.7; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+
+        @media (max-width: 768px) {
+            .whatsapp-chat {
+                width: 55px;
+                height: 55px;
+                font-size: 1.6rem;
+                bottom: 25px;
+                right: 15px;
+            }
+        }
+
+        /* Ripple Effect for Touch Feedback */
+        .ripple {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ripple::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            background-image: radial-gradient(circle, rgba(255,255,255,0.3) 10%, transparent 10.01%);
+            background-repeat: no-repeat;
+            background-position: 50%;
+            transform: scale(10,10);
+            opacity: 0;
+            transition: transform .5s, opacity 1s;
+        }
+
+        .ripple:active::after {
+            transform: scale(0,0);
+            opacity: .3;
+            transition: 0s;
+        }
+
+        /* Celebration Container */
+        .celebration-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .celebration-text {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            opacity: 0;
+            transform: scale(0);
+            animation: celebrationPop 2s ease-out forwards;
+        }
+
+        @keyframes celebrationPop {
+            0% {
+                opacity: 0;
+                transform: scale(0);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(1);
+            }
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+            padding: 0.5rem 0;
+            font-size: 1rem;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Smart Cart Preview */
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            position: relative;
+        }
+
+        .cart-preview-container {
+            position: relative;
+        }
+
+        .cart-preview-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            width: 350px;
+            background: var(--glass-heavy);
+            backdrop-filter: blur(30px);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-xl);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: var(--transition);
+            z-index: 1000;
+        }
+
+        .cart-preview-container:hover .cart-preview-dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .cart-preview-title {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--light);
+            font-weight: 600;
+        }
+
+        .cart-preview-items {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .cart-preview-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .cart-preview-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-preview-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 2px solid var(--glass-border);
+        }
+
+        .cart-preview-info {
+            flex: 1;
+        }
+
+        .cart-preview-name {
+            font-size: 0.9rem;
+            color: var(--light);
+            margin-bottom: 0.3rem;
+        }
+
+        .cart-preview-price {
+            font-size: 0.9rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .nav-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--light);
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-btn:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            font-size: 0.7rem;
+            min-width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            font-size: 1.3rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 0 5%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-reveal {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--dark);
+            clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+            animation: revealStroke 1.5s ease-out forwards;
+            z-index: 1;
+        }
+
+        @keyframes revealStroke {
+            0% { clip-path: polygon(0 0, 100% 0, 100% 0, 0 0); }
+            100% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+        }
+
+        .hero-content {
+            max-width: 800px;
+            z-index: 2;
+            position: relative;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease 1s forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 4rem;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(90deg, var(--light), var(--primary-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            will-change: transform, opacity;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--gray);
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(124, 58, 237, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--light);
+            border: 2px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(124, 58, 237, 0.1);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* Section Styling with Scroll Animations */
+        .section {
+            padding: 6rem 5%;
+            position: relative;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            will-change: transform, opacity;
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            will-change: transform, opacity;
+        }
+
+        .section-title.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: -15px;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 2px;
+        }
+
+        /* Gallery Controls */
+        .gallery-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            background: var(--glass-heavy);
+            backdrop-filter: blur(20px);
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .filter-btn {
+            padding: 0.8rem 1.8rem;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            color: var(--light);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            font-size: 1rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border-color: transparent;
+            transform: translateY(-2px);
+        }
+
+        .sort-options {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .sort-select {
+            padding: 0.8rem 1.5rem;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            color: var(--light);
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            min-width: 200px;
+        }
+
+        /* Gallery Grid with Staggered Loading */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .art-card {
+            background: var(--glass-heavy);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: var(--transition);
+            position: relative;
+            cursor: pointer;
+            border: 1px solid var(--glass-border);
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.6s ease, transform 0.6s ease, var(--transition);
+            will-change: transform, opacity;
+        }
+
+        .art-card.loaded {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .art-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--primary);
+        }
+
+        .art-status {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            padding: 0.5rem 1.2rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            z-index: 2;
+            backdrop-filter: blur(10px);
+        }
+
+        .status-available {
+            background: linear-gradient(135deg, var(--success), #059669);
+            color: white;
+        }
+
+        .status-sold {
+            background: linear-gradient(135deg, var(--sold), #DC2626);
+            color: white;
+        }
+
+        /* Lazy Load with Blur Effect */
+        .art-img-container {
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+            position: relative;
+            background: linear-gradient(45deg, var(--dark-light), var(--dark));
+        }
+
+        .art-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s ease;
+            filter: blur(20px);
+            opacity: 0;
+            transform: scale(1.1);
+            will-change: transform, opacity, filter;
+        }
+
+        .art-img.loaded {
+            filter: blur(0);
+            opacity: 1;
+            transform: scale(1);
+            transition: filter 0.5s ease, opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .quick-view {
+            position: absolute;
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 3;
+            opacity: 0;
+            font-weight: 600;
+            box-shadow: var(--shadow);
+        }
+
+        .art-card:hover .quick-view {
+            bottom: 2rem;
+            opacity: 1;
+        }
+
+        .art-info {
+            padding: 1.8rem;
+            position: relative;
+        }
+
+        .art-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            margin-bottom: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .art-category {
+            font-size: 0.9rem;
+            color: var(--primary-light);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .art-price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .art-price::before {
+            content: 'Rs. ';
+            font-size: 1rem;
+        }
+
+        .art-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.2rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        /* Like Animation */
+        .like-btn {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray);
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .like-btn.active, .like-btn:hover {
+            color: var(--sold);
+            transform: scale(1.1);
+        }
+
+        .heart-explosion {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .heart-particle {
+            position: absolute;
+            color: var(--sold);
+            font-size: 1rem;
+            opacity: 0;
+            animation: heartExplode 1s ease-out forwards;
+        }
+
+        @keyframes heartExplode {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--tx), var(--ty)) scale(0);
+            }
+        }
+
+        /* Confetti Animation */
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2000;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0;
+            animation: confettiFall 1s ease-out forwards;
+        }
+
+        @keyframes confettiFall {
+            0% {
+                opacity: 1;
+                transform: translateY(-100px) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        /* Art Philosophy Section */
+        .philosophy-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .philosophy-content p {
+            font-size: 1.1rem;
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        /* About the Art Section */
+        .about-art-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .about-art-card {
+            background: var(--glass-heavy);
+            backdrop-filter: blur(20px);
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid var(--glass-border);
+            transition: var(--transition);
+            opacity: 0;
+            transform: translateY(30px);
+            will-change: transform, opacity;
+        }
+
+        .about-art-card.loaded {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .about-art-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .about-art-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        /* FAQ Section */
+        .faq-container {
+            max-width: 800px;
+            margin: 3rem auto 0;
+        }
+
+        .faq-item {
+            background: var(--glass-heavy);
+            backdrop-filter: blur(20px);
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            border: 1px solid var(--glass-border);
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(20px);
+            will-change: transform, opacity;
+        }
+
+        .faq-item.loaded {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .faq-question {
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .faq-question:hover {
+            background: rgba(124, 58, 237, 0.1);
+        }
+
+        .faq-question.active {
+            background: rgba(124, 58, 237, 0.15);
+        }
+
+        .faq-answer {
+            padding: 0 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+
+        .faq-answer.active {
+            padding: 0 1.5rem 1.5rem;
+            max-height: 500px;
+        }
+
+        /* Shipping & Returns */
+        .policy-content {
+            background: var(--glass-heavy);
+            backdrop-filter: blur(20px);
+            padding: 2.5rem;
+            border-radius: 16px;
+            border: 1px solid var(--glass-border);
+            margin-top: 2rem;
+        }
+
+        .policy-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .policy-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .policy-section h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        /* Modal Styles with Swipe Support */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+        }
+
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: var(--glass-heavy);
+            backdrop-filter: blur(30px);
+            border-radius: 20px;
+            width: 90%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 3rem;
+            position: relative;
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-xl);
+            transform: translateY(50px);
+            transition: var(--transition);
+            will-change: transform;
+        }
+
+        .modal.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            color: var(--gray);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 10;
+        }
+
+        .close-modal:hover {
+            color: var(--sold);
+            border-color: var(--sold);
+            transform: rotate(90deg);
+        }
+
+        .modal-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.2rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        /* Image Viewer with Swipe Support */
+        .image-viewer {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 2.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .main-image-container {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--glass);
+            min-height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--glass-border);
+            touch-action: pan-y pinch-zoom;
+        }
+
+        .main-image {
+            max-width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+            cursor: zoom-in;
+            transition: transform 0.3s ease;
+        }
+
+        .swipe-indicator {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+        }
+
+        .main-image-container:hover .swipe-indicator {
+            opacity: 1;
+        }
+
+        .swipe-left, .swipe-right {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            color: var(--light);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+        }
+
+        .swipe-left:hover, .swipe-right:hover {
+            background: var(--primary);
+            transform: scale(1.1);
+        }
+
+        .image-zoom {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            color: var(--light);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 5;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+        }
+
+        .image-zoom:hover {
+            background: var(--primary);
+            transform: scale(1.1);
+        }
+
+        .thumbnail-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            max-height: 500px;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+
+        .thumbnail {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            opacity: 0.6;
+            border: 3px solid transparent;
+        }
+
+        .thumbnail.active, .thumbnail:hover {
+            opacity: 1;
+            border: 3px solid var(--primary);
+        }
+
+        /* Progress Steps */
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .progress-steps::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--glass-border);
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+
+        .progress-bar {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transform: translateY(-50%);
+            transition: width 0.5s ease;
+            z-index: 2;
+        }
+
+        .step {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--glass);
+            border: 3px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray);
+            font-weight: 700;
+            position: relative;
+            z-index: 3;
+            transition: var(--transition);
+        }
+
+        .step.active {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            border-color: transparent;
+            transform: scale(1.1);
+        }
+
+        .step.completed {
+            background: var(--success);
+            color: white;
+            border-color: transparent;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--gray);
+        }
+
+        .form-input, .form-textarea, .form-select {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            color: var(--light);
+            font-family: 'Inter', sans-serif;
+            transition: var(--transition);
+            font-size: 1rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.3);
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--primary);
+        }
+
+        /* Payment Methods */
+        .payment-methods {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .payment-method {
+            flex: 1;
+            min-width: 150px;
+            background: var(--glass);
+            border: 2px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .payment-method:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .payment-method.active {
+            border-color: var(--primary);
+            background: rgba(124, 58, 237, 0.15);
+            transform: translateY(-3px);
+        }
+
+        .payment-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        /* Receipt Modal */
+        .receipt {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 27, 75, 0.95));
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-top: 2rem;
+            border: 1px solid var(--glass-border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .receipt::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cpath d='M0,0 L100,0 L100,100 L0,100 Z' fill='none' stroke='rgba(124,58,237,0.1)' stroke-width='2'/%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+
+        .receipt-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 3px solid var(--primary);
+            position: relative;
+        }
+
+        .receipt-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .receipt-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .receipt-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.5rem;
+            font-weight: 700;
+            padding-top: 1.5rem;
+            margin-top: 1.5rem;
+            border-top: 3px solid var(--primary);
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .download-receipt {
+            width: 100%;
+            margin-top: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+        }
+
+        /* Zoom Overlay */
+        .zoom-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.97);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            cursor: zoom-out;
+            backdrop-filter: blur(20px);
+            touch-action: pinch-zoom;
+        }
+
+        .zoom-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .zoomed-image {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            border-radius: 16px;
+            box-shadow: var(--shadow-xl);
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            padding: 1.2rem 2rem;
+            background: var(--glass-heavy);
+            backdrop-filter: blur(20px);
+            border-left: 5px solid var(--primary);
+            border-radius: 12px;
+            box-shadow: var(--shadow-xl);
+            z-index: 1000;
+            transform: translateX(100%);
+            opacity: 0;
+            transition: var(--transition);
+            border: 1px solid var(--glass-border);
+            max-width: 400px;
+        }
+
+        .notification.active {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 27, 75, 0.9));
+            padding: 4rem 5% 2rem;
+            position: relative;
+            overflow: hidden;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-link {
+            color: var(--gray);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-link:hover {
+            color: var(--primary);
+            padding-left: 5px;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid var(--glass-border);
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* Reduced Motion Support */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            
+            .art-card, .section, .section-title, .about-art-card, .faq-item {
+                opacity: 1 !important;
+                transform: none !important;
+                transition: none !important;
+            }
+        }
+
+        /* Mobile Optimizations */
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: flex;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background: var(--glass-heavy);
+                backdrop-filter: blur(30px);
+                padding: 2rem;
+                flex-direction: column;
+                gap: 1.5rem;
+                border: 1px solid var(--glass-border);
+                border-radius: 0 0 16px 16px;
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: var(--transition);
+            }
+
+            .nav-links.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .section {
+                padding: 4rem 5%;
+            }
+
+            .section-title {
+                font-size: 2.2rem;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .gallery-controls {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .sort-options {
+                width: 100%;
+            }
+
+            .sort-select {
+                flex: 1;
+            }
+
+            .cart-preview-dropdown {
+                width: 300px;
+                right: -50px;
+            }
+
+            .btn {
+                padding: 0.8rem 1.8rem;
+                font-size: 0.9rem;
+            }
+
+            .image-viewer {
+                grid-template-columns: 1fr;
+            }
+
+            .thumbnail-container {
+                flex-direction: row;
+                max-height: 120px;
+                overflow-x: auto;
+                overflow-y: hidden;
+            }
+
+            .thumbnail {
+                width: 120px;
+                height: 80px;
+                min-width: 120px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .payment-methods {
+                flex-direction: column;
+            }
+
+            .payment-method {
+                min-width: 100%;
+            }
+
+            .receipt-details {
+                grid-template-columns: 1fr;
+            }
+
+            /* Touch-friendly buttons */
+            .nav-btn, .like-btn {
+                min-width: 44px;
+                min-height: 44px;
+            }
+
+            .faq-question, .filter-btn {
+                min-height: 44px;
+                padding: 1rem 1.5rem;
+            }
+
+            .back-to-top {
+                bottom: 80px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .logo {
+                font-size: 1.5rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+        }
+
+        /* Mobile Gesture Optimizations */
+        .art-card {
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        .art-img {
+            touch-action: manipulation;
+        }
+
+        /* Page Transition */
+        .page-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--dark);
+            z-index: 9998;
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+        }
+
+        .page-transition.active {
+            transform: translateX(0);
+        }
+    </style>
+
+    <!-- JavaScript -->
+    <script>
+        // Feature detection and polyfills
+        (function() {
+            // Check for Intersection Observer support
+            if (!('IntersectionObserver' in window)) {
+                // Load polyfill
+                var script = document.createElement('script');
+                script.src = 'https://polyfill.io/v3/polyfill.min.js?features=IntersectionObserver';
+                document.head.appendChild(script);
+            }
+
+            // Check for Promise support
+            if (!window.Promise) {
+                var script = document.createElement('script');
+                script.src = 'https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js';
+                document.head.appendChild(script);
+            }
+        })();
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize variables
+            let artworks = [];
+            let wishlist = JSON.parse(localStorage.getItem('paintsplashes_wishlist')) || [];
+            let cart = JSON.parse(localStorage.getItem('paintsplashes_cart')) || [];
+            let likes = JSON.parse(localStorage.getItem('paintsplashes_likes')) || {};
+            let currentStep = 1;
+            let currentPurchaseArt = null;
+            let currentViewerArt = null;
+            let currentImageIndex = 0;
+            let touchStartX = 0;
+            let touchEndX = 0;
+
+            // Sample artworks data with WebP and fallback
+            artworks = [
+                {
+                    id: 1,
+                    title: "Cosmic Dreams",
+                    price: 34900,
+                    category: "abstract",
+                    status: "available",
+                    likes: 42,
+                    description: "An abstract representation of cosmic energy and dreamlike states, blending vibrant colors with ethereal forms on canvas.",
+                    images: [
+                        "https://images.unsplash.com/photo-1541961017774-22349e4a1262?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                        "https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                    ],
+                    date: "2024-03-15",
+                    size: "50 × 70 cm"
+                },
+                {
+                    id: 2,
+                    title: "Ethereal Portrait",
+                    price: 39900,
+                    category: "portrait",
+                    status: "available",
+                    likes: 38,
+                    description: "A portrait that captures the ethereal beauty of human emotion through masterful brushwork and subtle color transitions.",
+                    images: [
+                        "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                    ],
+                    date: "2024-03-10",
+                    size: "60 × 80 cm"
+                },
+                {
+                    id: 3,
+                    title: "Mountain Serenity",
+                    price: 29900,
+                    category: "landscape",
+                    status: "sold",
+                    likes: 56,
+                    description: "A peaceful mountain landscape at dawn, capturing the tranquil beauty of nature's untouched spaces with oil on canvas.",
+                    images: [
+                        "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                        "https://images.unsplash.com/photo-1464278533981-50106e6176b1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                    ],
+                    date: "2024-02-28",
+                    size: "80 × 100 cm"
+                },
+                {
+                    id: 4,
+                    title: "Urban Symphony",
+                    price: 49900,
+                    category: "abstract",
+                    status: "available",
+                    likes: 67,
+                    description: "Contemporary urban landscape exploring the rhythm and energy of city life through bold strokes and dynamic composition.",
+                    images: [
+                        "https://images.unsplash.com/photo-1550686041-366ad85a1355?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                        "https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                    ],
+                    date: "2024-03-05",
+                    size: "100 × 150 cm"
+                },
+                {
+                    id: 5,
+                    title: "Desert Bloom",
+                    price: 42900,
+                    category: "abstract",
+                    status: "available",
+                    likes: 31,
+                    description: "Abstract interpretation of desert flowers blooming against arid landscapes, using textured acrylic techniques.",
+                    images: [
+                        "https://images.unsplash.com/photo-1543857778-c4a1a569e388?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                        "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                    ],
+                    date: "2024-02-20",
+                    size: "70 × 90 cm"
+                },
+                {
+                    id: 6,
+                    title: "Oceanic Whispers",
+                    price: 32900,
+                    category: "landscape",
+                    status: "available",
+                    likes: 49,
+                    description: "Seascape capturing the gentle whispers of ocean waves at twilight, painted with palette knife techniques.",
+                    images: [
+                        "https://images.unsplash.com/photo-1505142468610-359e7d316be0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                        "https://images.unsplash.com/photo-1439066615861-d1af74d74000?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                    ],
+                    date: "2024-03-01",
+                    size: "60 × 80 cm"
+                }
+            ];
+
+            // Hide loading screen
+            function hideLoadingScreen() {
+                const loadingScreen = document.getElementById('app-loading');
+                loadingScreen.style.opacity = '0';
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                    initializeWebsite();
+                }, 500);
+            }
+
+            // Initialize website functions
+            function initializeWebsite() {
+                updateCounts();
+                setupScrollAnimations();
+                setupEventListeners();
+                generateGallery();
+                setupFAQ();
+                setupSwipeGestures();
+                checkReducedMotion();
+            }
+
+            // Check for reduced motion preference
+            function checkReducedMotion() {
+                const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                if (reducedMotion) {
+                    document.body.classList.add('reduced-motion');
+                }
+            }
+
+            // Format price in PKR
+            function formatPrice(price) {
+                return 'Rs. ' + price.toLocaleString('en-PK');
+            }
+
+            // Update wishlist and cart counts
+            function updateCounts() {
+                const wishlistCount = Object.values(likes).filter(liked => liked).length;
+                const cartCount = cart.length;
+                
+                document.getElementById('wishlist-count').textContent = wishlistCount;
+                document.getElementById('cart-count').textContent = cartCount;
+                updateCartPreview();
+            }
+
+            // Generate gallery with staggered loading
+            function generateGallery(filter = 'all', sortBy = 'newest') {
+                const galleryGrid = document.getElementById('gallery-grid');
+                
+                // Show skeleton loading
+                galleryGrid.innerHTML = '';
+                for (let i = 0; i < 6; i++) {
+                    const skeleton = document.createElement('div');
+                    skeleton.className = 'art-card skeleton';
+                    skeleton.innerHTML = `
+                        <div class="art-img-container" style="background: linear-gradient(90deg, var(--dark-light) 25%, var(--dark) 50%, var(--dark-light) 75%); background-size: 200% 100%; animation: skeletonLoading 1.5s infinite;"></div>
+                        <div class="art-info">
+                            <div style="height: 24px; background: var(--dark-light); border-radius: 4px; margin-bottom: 10px; width: 70%;"></div>
+                            <div style="height: 16px; background: var(--dark-light); border-radius: 4px; margin-bottom: 10px; width: 40%;"></div>
+                            <div style="height: 32px; background: var(--dark-light); border-radius: 4px; width: 50%;"></div>
+                        </div>
+                    `;
+                    galleryGrid.appendChild(skeleton);
+                }
+
+                setTimeout(() => {
+                    galleryGrid.innerHTML = '';
+                    
+                    let filteredArtworks = filter === 'all' 
+                        ? [...artworks] 
+                        : artworks.filter(art => art.category === filter);
+                    
+                    // Apply sorting
+                    filteredArtworks.sort((a, b) => {
+                        switch(sortBy) {
+                            case 'newest':
+                                return new Date(b.date) - new Date(a.date);
+                            case 'popular':
+                                return (b.likes || 0) - (a.likes || 0);
+                            case 'price-low':
+                                return a.price - b.price;
+                            case 'price-high':
+                                return b.price - a.price;
+                            default:
+                                return 0;
+                        }
+                    });
+                    
+                    filteredArtworks.forEach((art, index) => {
+                        setTimeout(() => {
+                            createArtCard(art, index);
+                        }, index * 100); // Staggered loading
+                    });
+                }, 800);
+            }
+
+            // Create individual art card
+            function createArtCard(art, index) {
+                const galleryGrid = document.getElementById('gallery-grid');
+                const isLiked = likes[art.id] || false;
+                const status = art.status === 'available' ? 'Available' : 'Sold';
+                const statusClass = art.status === 'available' ? 'status-available' : 'status-sold';
+                
+                const artCard = document.createElement('div');
+                artCard.className = 'art-card';
+                artCard.style.animationDelay = `${index * 0.1}s`;
+                artCard.innerHTML = `
+                    <div class="art-status ${statusClass}">${status}</div>
+                    <div class="art-img-container">
+                        <img src="" 
+                             data-src="${art.images[0]}" 
+                             alt="${art.title}" 
+                             class="art-img"
+                             loading="lazy">
+                        <button class="quick-view" data-id="${art.id}">
+                            <i class="fas fa-eye"></i> Quick View
+                        </button>
+                    </div>
+                    <div class="art-info">
+                        <h3 class="art-title">${art.title}</h3>
+                        <div class="art-category">
+                            <i class="fas fa-tag"></i>
+                            <span>${art.category.charAt(0).toUpperCase() + art.category.slice(1)}</span>
+                            <span style="margin-left: auto; font-size: 0.8rem; color: var(--gray);">
+                                <i class="fas fa-expand-alt"></i> ${art.size}
+                            </span>
+                        </div>
+                        <div class="art-price">${formatPrice(art.price)}</div>
+                        <div class="art-actions">
+                            <button class="btn btn-primary buy-btn ripple" data-id="${art.id}">
+                                <i class="fas fa-shopping-cart"></i> Buy Now
+                            </button>
+                            <div class="action-buttons">
+                                <button class="like-btn ripple ${isLiked ? 'active' : ''}" data-id="${art.id}">
+                                    <i class="fas fa-heart"></i>
+                                    <div class="heart-explosion" id="heart-${art.id}"></div>
+                                </button>
+                                <button class="like-btn share-btn ripple" data-id="${art.id}">
+                                    <i class="fas fa-share-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                galleryGrid.appendChild(artCard);
+                
+                // Load image with Intersection Observer
+                const img = artCard.querySelector('.art-img');
+                loadImageWithObserver(img);
+                
+                // Add loaded class with delay for staggered animation
+                setTimeout(() => {
+                    artCard.classList.add('loaded');
+                }, 300 + (index * 100));
+            }
+
+            // Setup lazy loading with Intersection Observer
+            function loadImageWithObserver(img) {
+                if ('IntersectionObserver' in window) {
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                const img = entry.target;
+                                img.src = img.dataset.src;
+                                img.onload = () => {
+                                    img.classList.add('loaded');
+                                };
+                                observer.unobserve(img);
+                            }
+                        });
+                    }, {
+                        rootMargin: '50px 0px',
+                        threshold: 0.1
+                    });
+                    
+                    observer.observe(img);
+                } else {
+                    // Fallback
+                    img.src = img.dataset.src;
+                    img.onload = () => {
+                        img.classList.add('loaded');
+                    };
+                }
+            }
+
+            // Setup scroll animations
+            function setupScrollAnimations() {
+                const sectionObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            
+                            // Animate child elements with delay
+                            const children = entry.target.querySelectorAll('.about-art-card, .faq-item');
+                            children.forEach((child, index) => {
+                                setTimeout(() => {
+                                    child.classList.add('loaded');
+                                }, index * 200);
+                            });
+                        }
+                    });
+                }, {
+                    threshold: 0.1,
+                    rootMargin: '0px 0px -100px 0px'
+                });
+
+                // Observe sections
+                document.querySelectorAll('.section').forEach(section => {
+                    sectionObserver.observe(section);
+                });
+
+                // Back to top button
+                const backToTopBtn = document.getElementById('back-to-top');
+                window.addEventListener('scroll', function() {
+                    // Scroll progress
+                    const scrollTop = window.pageYOffset;
+                    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                    const scrollPercent = (scrollTop / docHeight) * 100;
+                    
+                    document.getElementById('scroll-progress').style.width = scrollPercent + '%';
+                    
+                    // Back to top button
+                    if (scrollTop > 500) {
+                        backToTopBtn.classList.add('visible');
+                    } else {
+                        backToTopBtn.classList.remove('visible');
+                    }
+                });
+
+                // Back to top click
+                backToTopBtn.addEventListener('click', function() {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+            }
+
+            // Setup FAQ functionality
+            function setupFAQ() {
+                document.querySelectorAll('.faq-question').forEach((question, index) => {
+                    setTimeout(() => {
+                        question.parentElement.classList.add('loaded');
+                    }, index * 150);
+                    
+                    question.addEventListener('click', function() {
+                        const answer = this.nextElementSibling;
+                        const isActive = this.classList.contains('active');
+                        
+                        // Close all other FAQs
+                        document.querySelectorAll('.faq-question').forEach(q => {
+                            if (q !== this) {
+                                q.classList.remove('active');
+                                q.nextElementSibling.classList.remove('active');
+                            }
+                        });
+                        
+                        // Toggle current FAQ
+                        if (!isActive) {
+                            this.classList.add('active');
+                            answer.classList.add('active');
+                        } else {
+                            this.classList.remove('active');
+                            answer.classList.remove('active');
+                        }
+                    });
+                });
+            }
+
+            // Setup swipe gestures
+            function setupSwipeGestures() {
+                const imageContainer = document.querySelector('.main-image-container');
+                if (!imageContainer) return;
+
+                imageContainer.addEventListener('touchstart', function(e) {
+                    touchStartX = e.changedTouches[0].screenX;
+                });
+
+                imageContainer.addEventListener('touchend', function(e) {
+                    touchEndX = e.changedTouches[0].screenX;
+                    handleSwipe();
+                });
+            }
+
+            function handleSwipe() {
+                const minSwipeDistance = 50;
+                const swipeDistance = touchEndX - touchStartX;
+
+                if (Math.abs(swipeDistance) > minSwipeDistance) {
+                    if (swipeDistance > 0) {
+                        // Swipe right - previous image
+                        navigateImage(-1);
+                    } else {
+                        // Swipe left - next image
+                        navigateImage(1);
+                    }
+                }
+            }
+
+            function navigateImage(direction) {
+                if (!currentViewerArt) return;
+                
+                const thumbnails = document.querySelectorAll('.thumbnail');
+                currentImageIndex += direction;
+                
+                if (currentImageIndex < 0) {
+                    currentImageIndex = thumbnails.length - 1;
+                } else if (currentImageIndex >= thumbnails.length) {
+                    currentImageIndex = 0;
+                }
+                
+                const mainImage = document.getElementById('main-image');
+                mainImage.src = currentViewerArt.images[currentImageIndex];
+                
+                // Update active thumbnail
+                thumbnails.forEach((thumb, index) => {
+                    thumb.classList.toggle('active', index === currentImageIndex);
+                });
+            }
+
+            // Update cart preview
+            function updateCartPreview() {
+                const previewItems = document.getElementById('cart-preview-items');
+                previewItems.innerHTML = '';
+                
+                if (cart.length === 0) {
+                    previewItems.innerHTML = '<p style="color: var(--gray); text-align: center; padding: 2rem;">Your cart is empty</p>';
+                    return;
+                }
+                
+                cart.forEach(item => {
+                    const art = artworks.find(a => a.id === item.artId);
+                    if (!art) return;
+                    
+                    const itemEl = document.createElement('div');
+                    itemEl.className = 'cart-preview-item';
+                    itemEl.innerHTML = `
+                        <img src="${art.images[0]}" alt="${art.title}" class="cart-preview-img">
+                        <div class="cart-preview-info">
+                            <div class="cart-preview-name">${art.title}</div>
+                            <div class="cart-preview-price">${formatPrice(art.price)}</div>
+                        </div>
+                        <button class="remove-cart-item ripple" data-id="${art.id}" style="background: none; border: none; color: var(--gray); cursor: pointer; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    `;
+                    previewItems.appendChild(itemEl);
+                });
+            }
+
+            // Create heart explosion animation
+            function createHeartExplosion(button) {
+                const explosion = button.querySelector('.heart-explosion');
+                if (!explosion) return;
+                
+                explosion.innerHTML = '';
+                
+                for (let i = 0; i < 8; i++) {
+                    const heart = document.createElement('div');
+                    heart.className = 'heart-particle';
+                    heart.innerHTML = '<i class="fas fa-heart"></i>';
+                    
+                    const angle = (i / 8) * Math.PI * 2;
+                    const distance = 50;
+                    const tx = Math.cos(angle) * distance;
+                    const ty = Math.sin(angle) * distance;
+                    
+                    heart.style.setProperty('--tx', `${tx}px`);
+                    heart.style.setProperty('--ty', `${ty}px`);
+                    heart.style.animationDelay = `${i * 0.1}s`;
+                    
+                    explosion.appendChild(heart);
+                }
+                
+                setTimeout(() => {
+                    explosion.innerHTML = '';
+                }, 1000);
+            }
+
+            // Create confetti animation
+            function createConfetti() {
+                const container = document.getElementById('confetti-container');
+                container.innerHTML = '';
+                
+                for (let i = 0; i < 50; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    
+                    const colors = ['#7C3AED', '#0EA5E9', '#F59E0B', '#10B981', '#EF4444'];
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    confetti.style.left = `${Math.random() * 100}%`;
+                    confetti.style.background = color;
+                    confetti.style.animationDelay = `${Math.random() * 0.5}s`;
+                    
+                    container.appendChild(confetti);
+                }
+                
+                setTimeout(() => {
+                    container.innerHTML = '';
+                }, 1000);
+            }
+
+            // Create celebration animation
+            function createCelebration() {
+                const container = document.getElementById('celebration-container');
+                container.style.display = 'flex';
+                
+                setTimeout(() => {
+                    container.style.display = 'none';
+                }, 2000);
+            }
+
+            // Show notification
+            function showNotification(message) {
+                const notification = document.getElementById('notification');
+                const notificationMessage = document.getElementById('notification-message');
+                
+                notificationMessage.textContent = message;
+                notification.classList.add('active');
+                
+                setTimeout(() => {
+                    notification.classList.remove('active');
+                }, 3000);
+            }
+
+            // Open image viewer
+            function openImageViewer(artId) {
+                const art = artworks.find(a => a.id === artId);
+                if (!art) return;
+                
+                currentViewerArt = art;
+                currentImageIndex = 0;
+                
+                // Set main image
+                const mainImage = document.getElementById('main-image');
+                mainImage.src = art.images[0];
+                mainImage.alt = art.title;
+                
+                // Set artwork info
+                document.getElementById('viewer-title').textContent = art.title;
+                document.getElementById('viewer-price').textContent = formatPrice(art.price);
+                document.getElementById('viewer-category').textContent = art.category.charAt(0).toUpperCase() + art.category.slice(1);
+                document.getElementById('viewer-desc').textContent = art.description;
+                
+                // Set status
+                const statusElement = document.getElementById('viewer-status');
+                statusElement.textContent = art.status.charAt(0).toUpperCase() + art.status.slice(1);
+                statusElement.className = `art-status status-${art.status}`;
+                
+                // Generate thumbnails
+                const thumbnailContainer = document.getElementById('thumbnail-container');
+                thumbnailContainer.innerHTML = '';
+                
+                art.images.forEach((img, index) => {
+                    const thumbnail = document.createElement('img');
+                    thumbnail.className = `thumbnail ${index === 0 ? 'active' : ''}`;
+                    thumbnail.src = img;
+                    thumbnail.alt = `${art.title} - View ${index + 1}`;
+                    thumbnail.addEventListener('click', () => {
+                        document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
+                        thumbnail.classList.add('active');
+                        mainImage.src = img;
+                        currentImageIndex = index;
+                    });
+                    thumbnailContainer.appendChild(thumbnail);
+                });
+                
+                // Open modal
+                document.getElementById('image-viewer-modal').classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            // Close image viewer
+            function closeImageViewer() {
+                document.getElementById('image-viewer-modal').classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+
+            // Open purchase modal
+            function openPurchaseModal(artId) {
+                const art = artworks.find(a => a.id === artId);
+                if (!art) return;
+                
+                currentPurchaseArt = art;
+                currentStep = 1;
+                
+                // Reset steps
+                document.querySelectorAll('.step').forEach((step, index) => {
+                    step.classList.remove('active', 'completed');
+                    if (index === 0) step.classList.add('active');
+                });
+                document.getElementById('progress-bar').style.width = '33.33%';
+                
+                // Set artwork details
+                document.getElementById('purchase-art-title').textContent = art.title;
+                document.getElementById('purchase-art-price').textContent = formatPrice(art.price);
+                document.getElementById('purchase-art-category').textContent = art.category.charAt(0).toUpperCase() + art.category.slice(1) + ' Painting';
+                
+                // Show step 1, hide form
+                document.getElementById('step-1-content').style.display = 'block';
+                document.getElementById('purchase-form').style.display = 'none';
+                
+                // Open modal
+                document.getElementById('purchase-modal').classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            // Close purchase modal
+            function closePurchaseModal() {
+                document.getElementById('purchase-modal').classList.remove('active');
+                document.body.style.overflow = 'auto';
+                currentStep = 1;
+            }
+
+            // Show receipt
+            function showReceipt(order) {
+                // Fill receipt details
+                document.getElementById('receipt-order-id').textContent = order.id;
+                document.getElementById('receipt-date').textContent = order.date;
+                document.getElementById('receipt-time').textContent = order.time;
+                document.getElementById('receipt-customer').textContent = order.name;
+                document.getElementById('receipt-email').textContent = order.email;
+                document.getElementById('receipt-phone').textContent = order.phone;
+                document.getElementById('receipt-address').textContent = `${order.address}, ${order.city} ${order.postal}`;
+                document.getElementById('receipt-art-title').textContent = `${order.artTitle} - Original Painting`;
+                document.getElementById('receipt-art-price').textContent = formatPrice(order.price);
+                document.getElementById('receipt-payment').textContent = getPaymentMethodName(order.paymentMethod);
+                document.getElementById('receipt-total').textContent = formatPrice(order.price);
+                
+                // Show receipt modal
+                document.getElementById('receipt-modal').classList.add('active');
+                document.body.style.overflow = 'hidden';
+                
+                // Show celebration and confetti
+                createCelebration();
+                createConfetti();
+                
+                showNotification('Order confirmed successfully! We will contact you shortly.');
+            }
+
+            function getPaymentMethodName(method) {
+                switch(method) {
+                    case 'cod': return 'Cash on Delivery';
+                    case 'easypaisa': return 'EasyPaisa';
+                    case 'jazzcash': return 'JazzCash';
+                    default: return method;
+                }
+            }
+
+            // Share artwork
+            function shareArtwork(art) {
+                if (navigator.share) {
+                    navigator.share({
+                        title: art.title,
+                        text: `Check out "${art.title}" by Paintsplashes - ${formatPrice(art.price)}`,
+                        url: window.location.href + `?artwork=${art.id}`
+                    }).then(() => {
+                        showNotification('Thanks for sharing!');
+                    }).catch(err => {
+                        console.log('Error sharing:', err);
+                        copyToClipboard(window.location.href);
+                    });
+                } else {
+                    copyToClipboard(window.location.href);
+                }
+            }
+
+            // Copy to clipboard
+            function copyToClipboard(text) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showNotification('Link copied to clipboard!');
+                }).catch(err => {
+                    console.log('Error copying:', err);
+                    showNotification('Could not copy link');
+                });
+            }
+
+            // Setup event listeners
+            function setupEventListeners() {
+                // Mobile menu toggle
+                document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+                    document.getElementById('nav-links').classList.toggle('active');
+                });
+
+                // Close mobile menu when clicking outside
+                document.addEventListener('click', function(event) {
+                    const navLinks = document.getElementById('nav-links');
+                    const menuBtn = document.getElementById('mobile-menu-btn');
+                    
+                    if (!navLinks.contains(event.target) && !menuBtn.contains(event.target)) {
+                        navLinks.classList.remove('active');
+                    }
+                });
+
+                // Filter buttons
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                        this.classList.add('active');
+                        
+                        const filter = this.getAttribute('data-filter');
+                        const sortBy = document.getElementById('sort-select').value;
+                        generateGallery(filter, sortBy);
+                    });
+                });
+
+                // Sort select
+                document.getElementById('sort-select').addEventListener('change', function() {
+                    const filter = document.querySelector('.filter-btn.active').getAttribute('data-filter');
+                    generateGallery(filter, this.value);
+                });
+
+                // Gallery event delegation
+                document.getElementById('gallery-grid').addEventListener('click', function(e) {
+                    // Quick view button
+                    if (e.target.closest('.quick-view')) {
+                        const button = e.target.closest('.quick-view');
+                        const artId = parseInt(button.getAttribute('data-id'));
+                        openImageViewer(artId);
+                    }
+                    
+                    // Buy now button
+                    if (e.target.closest('.buy-btn')) {
+                        const button = e.target.closest('.buy-btn');
+                        const artId = parseInt(button.getAttribute('data-id'));
+                        openPurchaseModal(artId);
+                    }
+                    
+                    // Like button
+                    if (e.target.closest('.like-btn:not(.share-btn)')) {
+                        const button = e.target.closest('.like-btn');
+                        const artId = parseInt(button.getAttribute('data-id'));
+                        
+                        // Toggle like
+                        likes[artId] = !likes[artId];
+                        localStorage.setItem('paintsplashes_likes', JSON.stringify(likes));
+                        
+                        // Update button state
+                        if (likes[artId]) {
+                            button.classList.add('active');
+                            createHeartExplosion(button);
+                            showNotification('Added to wishlist!');
+                        } else {
+                            button.classList.remove('active');
+                            showNotification('Removed from wishlist');
+                        }
+                        
+                        updateCounts();
+                    }
+                    
+                    // Share button
+                    if (e.target.closest('.share-btn')) {
+                        const button = e.target.closest('.share-btn');
+                        const artId = parseInt(button.getAttribute('data-id'));
+                        const art = artworks.find(a => a.id === artId);
+                        
+                        if (art) {
+                            shareArtwork(art);
+                        }
+                    }
+                });
+
+                // Image viewer events
+                document.getElementById('close-image-viewer').addEventListener('click', closeImageViewer);
+                document.getElementById('image-viewer-modal').addEventListener('click', function(e) {
+                    if (e.target === this) closeImageViewer();
+                });
+
+                // Swipe navigation buttons
+                document.querySelector('.swipe-left')?.addEventListener('click', () => navigateImage(-1));
+                document.querySelector('.swipe-right')?.addEventListener('click', () => navigateImage(1));
+
+                // Purchase from viewer
+                document.getElementById('viewer-purchase').addEventListener('click', function() {
+                    if (currentViewerArt) {
+                        openPurchaseModal(currentViewerArt.id);
+                        closeImageViewer();
+                    }
+                });
+
+                // Share from viewer
+                document.getElementById('viewer-share').addEventListener('click', function() {
+                    if (currentViewerArt) {
+                        shareArtwork(currentViewerArt);
+                    }
+                });
+
+                // Purchase modal events
+                document.getElementById('close-purchase-modal').addEventListener('click', closePurchaseModal);
+                document.getElementById('purchase-modal').addEventListener('click', function(e) {
+                    if (e.target === this) closePurchaseModal();
+                });
+
+                // Next to step 2
+                document.getElementById('next-to-step-2').addEventListener('click', function() {
+                    document.getElementById('step-1').classList.remove('active');
+                    document.getElementById('step-1').classList.add('completed');
+                    document.getElementById('step-2').classList.add('active');
+                    document.getElementById('progress-bar').style.width = '66.66%';
+                    
+                    document.getElementById('step-1-content').style.display = 'none';
+                    document.getElementById('purchase-form').style.display = 'block';
+                    currentStep = 2;
+                });
+
+                // Back to step 1
+                document.getElementById('back-to-step-1').addEventListener('click', function() {
+                    document.getElementById('step-2').classList.remove('active');
+                    document.getElementById('step-1').classList.add('active');
+                    document.getElementById('step-1').classList.remove('completed');
+                    document.getElementById('progress-bar').style.width = '33.33%';
+                    
+                    document.getElementById('step-1-content').style.display = 'block';
+                    document.getElementById('purchase-form').style.display = 'none';
+                    currentStep = 1;
+                });
+
+                // Payment method selection
+                document.querySelectorAll('.payment-method').forEach(method => {
+                    method.addEventListener('click', function() {
+                        document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('active'));
+                        this.classList.add('active');
+                        document.getElementById('payment-method').value = this.dataset.method;
+                    });
+                });
+
+                // Purchase form submission
+                document.getElementById('purchase-form').addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    if (!currentPurchaseArt) return;
+                    
+                    const name = document.getElementById('name').value;
+                    const email = document.getElementById('email').value;
+                    const phone = document.getElementById('phone').value;
+                    const whatsapp = document.getElementById('whatsapp').value || phone;
+                    const address = document.getElementById('address').value;
+                    const city = document.getElementById('city').value;
+                    const postal = document.getElementById('postal').value;
+                    const paymentMethod = document.getElementById('payment-method').value;
+                    const instructions = document.getElementById('instructions').value;
+                    
+                    if (!paymentMethod) {
+                        showNotification('Please select a payment method');
+                        return;
+                    }
+                    
+                    // Create order
+                    const order = {
+                        id: 'PS-' + Date.now().toString().slice(-6),
+                        artId: currentPurchaseArt.id,
+                        artTitle: currentPurchaseArt.title,
+                        price: currentPurchaseArt.price,
+                        name: name,
+                        email: email,
+                        phone: phone,
+                        whatsapp: whatsapp,
+                        address: address,
+                        city: city,
+                        postal: postal,
+                        paymentMethod: paymentMethod,
+                        instructions: instructions,
+                        date: new Date().toLocaleDateString('en-US', { 
+                            year: 'numeric', 
+                            month: 'long', 
+                            day: 'numeric' 
+                        }),
+                        time: new Date().toLocaleTimeString('en-US', { 
+                            hour: '2-digit', 
+                            minute: '2-digit' 
+                        })
+                    };
+                    
+                    // Add to cart
+                    cart.push(order);
+                    localStorage.setItem('paintsplashes_cart', JSON.stringify(cart));
+                    updateCounts();
+                    
+                    // Complete steps
+                    document.getElementById('step-2').classList.remove('active');
+                    document.getElementById('step-2').classList.add('completed');
+                    document.getElementById('step-3').classList.add('active');
+                    document.getElementById('progress-bar').style.width = '100%';
+                    
+                    // Show receipt
+                    setTimeout(() => {
+                        showReceipt(order);
+                        closePurchaseModal();
+                    }, 500);
+                    
+                    // Reset form
+                    this.reset();
+                    document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('active'));
+                    document.getElementById('payment-method').value = '';
+                });
+
+                // Receipt modal events
+                document.getElementById('close-receipt-modal').addEventListener('click', function() {
+                    document.getElementById('receipt-modal').classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                });
+
+                document.getElementById('receipt-modal').addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        document.getElementById('receipt-modal').classList.remove('active');
+                        document.body.style.overflow = 'auto';
+                    }
+                });
+
+                // Download receipt
+                document.getElementById('download-receipt').addEventListener('click', function() {
+                    const receiptContent = document.querySelector('.receipt').innerHTML;
+                    const printWindow = window.open('', '_blank');
+                    printWindow.document.write(`
+                        <!DOCTYPE html>
+                        <html>
+                        <head>
+                            <title>Paintsplashes Receipt</title>
+                            <style>
+                                body { font-family: Arial, sans-serif; padding: 20px; }
+                                .receipt { border: 2px solid #7C3AED; padding: 30px; border-radius: 10px; }
+                                h3 { color: #7C3AED; text-align: center; }
+                            </style>
+                        </head>
+                        <body>
+                            <div class="receipt">
+                                ${receiptContent}
+                            </div>
+                            <script>
+                                window.onload = () => window.print();
+                            <\/script>
+                        </body>
+                        </html>
+                    `);
+                    printWindow.document.close();
+                });
+
+                // Explore button
+                document.getElementById('explore-btn').addEventListener('click', function() {
+                    document.getElementById('gallery').scrollIntoView({ behavior: 'smooth' });
+                });
+
+                // Load more button
+                document.getElementById('load-more').addEventListener('click', function() {
+                    this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+                    setTimeout(() => {
+                        this.innerHTML = '<i class="fas fa-check"></i> All Artworks Loaded';
+                        this.disabled = true;
+                        showNotification('All artworks loaded successfully!');
+                    }, 1500);
+                });
+
+                // Zoom functionality
+                document.getElementById('zoom-btn').addEventListener('click', function() {
+                    const mainImage = document.getElementById('main-image');
+                    document.getElementById('zoomed-image').src = mainImage.src;
+                    document.getElementById('zoom-overlay').classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                });
+
+                document.getElementById('zoom-overlay').addEventListener('click', function() {
+                    this.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                });
+
+                // Keyboard navigation
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape') {
+                        closeImageViewer();
+                        closePurchaseModal();
+                        document.getElementById('receipt-modal').classList.remove('active');
+                        document.getElementById('zoom-overlay').classList.remove('active');
+                        document.body.style.overflow = 'auto';
+                    }
+                    
+                    // Arrow keys for image navigation
+                    if (document.getElementById('image-viewer-modal').classList.contains('active')) {
+                        if (e.key === 'ArrowLeft') navigateImage(-1);
+                        if (e.key === 'ArrowRight') navigateImage(1);
+                    }
+                });
+
+                // Smooth scroll for anchor links with page transition
+                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                    anchor.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const targetId = this.getAttribute('href');
+                        if (targetId === '#') return;
+                        
+                        // Create page transition effect
+                        const transition = document.createElement('div');
+                        transition.className = 'page-transition';
+                        document.body.appendChild(transition);
+                        
+                        setTimeout(() => {
+                            const targetElement = document.querySelector(targetId);
+                            if (targetElement) {
+                                targetElement.scrollIntoView({
+                                    behavior: 'smooth',
+                                    block: 'start'
+                                });
+                            }
+                            
+                            // Remove transition
+                            setTimeout(() => {
+                                transition.classList.add('active');
+                                setTimeout(() => {
+                                    document.body.removeChild(transition);
+                                }, 500);
+                            }, 300);
+                            
+                            // Close mobile menu if open
+                            document.getElementById('nav-links').classList.remove('active');
+                        }, 100);
+                    });
+                });
+
+                // Cart preview remove items
+                document.addEventListener('click', function(e) {
+                    if (e.target.closest('.remove-cart-item')) {
+                        const button = e.target.closest('.remove-cart-item');
+                        const artId = parseInt(button.getAttribute('data-id'));
+                        
+                        cart = cart.filter(item => item.artId !== artId);
+                        localStorage.setItem('paintsplashes_cart', JSON.stringify(cart));
+                        updateCounts();
+                        
+                        showNotification('Removed from cart');
+                    }
+                });
+
+                // Wishlist button
+                document.getElementById('wishlist-btn').addEventListener('click', function() {
+                    document.getElementById('gallery').scrollIntoView({ behavior: 'smooth' });
+                    showNotification('Scroll to see your wishlisted items');
+                });
+
+                // Cart button
+                document.getElementById('cart-btn').addEventListener('click', function() {
+                    if (cart.length === 0) {
+                        showNotification('Your cart is empty');
+                    } else {
+                        showNotification(`You have ${cart.length} items in cart`);
+                    }
+                });
+            }
+
+            // Hide loading screen after 2 seconds or when page is loaded
+            if (document.readyState === 'complete') {
+                hideLoadingScreen();
+            } else {
+                window.addEventListener('load', hideLoadingScreen);
+                // Fallback timeout
+                setTimeout(hideLoadingScreen, 3000);
+            }
+        });
+    </script>
+</body>
+</html>
